@@ -1,0 +1,7 @@
+enabled: true
+
+# Refer to https://jd.papermc.io/paper/1.21.11-pre3/org/bukkit/Material.html
+# for all possible objects
+# If the material isn't a block then it will effectively do nothing
+functionalBlocks:
+  - CHEST
