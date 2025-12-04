@@ -1,0 +1,32 @@
+# Compiled class files
+*.class
+
+# Maven / Gradle build directories
+/target/
+/build/
+
+# IntelliJ IDEA
+*.iml
+/.idea/
+/out/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+
+# VS Code
+.vscode/
+
+# Log files
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Other
+run/
+.gradle/
+build/
+.kotlin/
