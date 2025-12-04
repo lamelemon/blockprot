@@ -1,0 +1,7 @@
+name: blockprot
+version: '1.0-SNAPSHOT'
+main: io.github.lamelemon.blockprot.Blockprot
+api-version: '1.21.10'
+prefix: BlockProt
+authors: [ lamelemon ]
+website: https://github.com/lamelemon/blockprot.git
