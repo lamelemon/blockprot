@@ -12,7 +12,8 @@ import java.util.UUID
 
 object utils {
     private val friendKey: NamespacedKey = NamespacedKey(instance, "friends")
-    private val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
+    val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
+    lateinit var functionalMaterials: HashSet<Material>
 
     fun messagePlayer(player: Player, message: String) {
         player.sendRichMessage("<gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message")

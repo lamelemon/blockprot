@@ -10,7 +10,10 @@ import java.util.UUID
 object UUIDListDataType: PersistentDataType<ByteArray, List<UUID>> {
     override fun getPrimitiveType(): Class<ByteArray> = ByteArray::class.java
 
-    override fun getComplexType(): Class<List<UUID>> = List::class.java as Class<List<UUID>>
+    override fun getComplexType(): Class<List<UUID>> {
+        @Suppress("UNCHECKED_CAST")
+        return List::class.java as Class<List<UUID>>
+    }
 
     override fun toPrimitive(
         complex: List<UUID>,
