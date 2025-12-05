@@ -39,6 +39,10 @@ object utils {
         return dataContainer.get(friendKey, UUIDListDataType)?.contains(friend.uniqueId) ?: false
     }
 
+    fun isOwner(dataContainer: PersistentDataContainer, player: Player): Boolean {
+        return dataContainer.get(ownerKey, UUIDDataType) == player.uniqueId
+    }
+
     fun setOwner(dataContainer: PersistentDataContainer, owner: Player) {
         dataContainer.set(ownerKey, UUIDDataType, owner.uniqueId)
     }
@@ -54,7 +58,7 @@ object utils {
     }
 
     fun isAllowedToInteract(dataContainer: PersistentDataContainer, player: Player): Boolean {
-        if (isFriend(dataContainer, player)) return true
+        if (isFriend(dataContainer, player) || isOwner(dataContainer, player)) return true
 
         val owner = getOwner(dataContainer)?.let { Bukkit.getPlayer(it) }
         return if (owner is Player) {

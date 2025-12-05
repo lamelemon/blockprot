@@ -1,8 +1,5 @@
 package io.github.lamelemon.blockprot.events
 
-import io.github.lamelemon.blockprot.Blockprot
-import io.github.lamelemon.blockprot.utils.UUIDDataType
-import io.github.lamelemon.blockprot.utils.utils
 import io.github.lamelemon.blockprot.utils.utils.functionalMaterials
 import io.github.lamelemon.blockprot.utils.utils.setOwner
 import org.bukkit.event.EventHandler
