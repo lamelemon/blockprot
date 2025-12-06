@@ -1,5 +1,6 @@
 package io.github.lamelemon.blockprot
 
+import io.github.lamelemon.blockprot.events.BlockInteract
 import io.github.lamelemon.blockprot.events.BlockPlace
 import io.github.lamelemon.blockprot.utils.utils
 import org.bukkit.Bukkit
@@ -29,6 +30,6 @@ class Blockprot : JavaPlugin() {
         utils.functionalMaterials = config.getStringList("functional-materials").mapNotNullTo(HashSet()) { Material.getMaterial(it) }
 
         pluginManager.registerEvents(BlockPlace(), this)
-
+        pluginManager.registerEvents(BlockInteract(), this)
     }
 }
