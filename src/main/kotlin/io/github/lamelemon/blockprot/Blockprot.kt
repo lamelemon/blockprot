@@ -1,15 +1,15 @@
 package io.github.lamelemon.blockprot
 
+import io.github.lamelemon.blockprot.commands.Friends
 import io.github.lamelemon.blockprot.events.BlockInteract
 import io.github.lamelemon.blockprot.events.BlockPlace
-import io.github.lamelemon.blockprot.utils.utils
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
 class Blockprot : JavaPlugin() {
+
     companion object {
         lateinit var instance: Blockprot
     }
@@ -27,9 +27,10 @@ class Blockprot : JavaPlugin() {
         }
 
         instance = this
-        utils.functionalMaterials = config.getStringList("functional-materials").mapNotNullTo(HashSet()) { Material.getMaterial(it) }
 
         pluginManager.registerEvents(BlockPlace(), this)
         pluginManager.registerEvents(BlockInteract(), this)
+
+        registerCommand("friends", HashSet<String>(setOf("friend")), Friends())
     }
 }

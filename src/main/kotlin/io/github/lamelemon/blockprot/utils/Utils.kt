@@ -6,14 +6,32 @@ import io.github.lamelemon.blockprot.utils.UUIDListDataType.removeUuid
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.Tag
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import java.util.UUID
 
-object utils {
+object Utils {
+
     private val friendKey: NamespacedKey = NamespacedKey(instance, "friends")
     val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
-    lateinit var functionalMaterials: HashSet<Material>
+    val functionalTags: HashSet<Tag<Material>> = HashSet(setOf(
+        Tag.DOORS,
+        Tag.TRAPDOORS,
+        Tag.SHULKER_BOXES,
+        Tag.COPPER_CHESTS
+    ))
+    val functionalMaterials: HashSet<Material> = HashSet(setOf(
+        Material.CHEST,
+        Material.TRAPPED_CHEST,
+        Material.BARREL,
+        Material.CRAFTER,
+        Material.DROPPER,
+        Material.DISPENSER,
+        Material.FURNACE,
+        Material.BLAST_FURNACE,
+        Material.SMOKER
+    ))
 
     fun messagePlayer(player: Player, message: String) {
         player.sendRichMessage("<gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message")
@@ -33,6 +51,10 @@ object utils {
 
     fun removeFriend(dataContainer: PersistentDataContainer, friend: Player) {
         dataContainer.removeUuid(friendKey, friend.uniqueId)
+    }
+
+    fun getFriends(player: Player): List<UUID>? {
+        return player.persistentDataContainer.get(friendKey, UUIDListDataType)
     }
 
     fun isFriend(dataContainer: PersistentDataContainer, friend: Player): Boolean {

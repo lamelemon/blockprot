@@ -1,21 +1,2 @@
 enabled: true
 
-# Refer to https://jd.papermc.io/paper/1.21.11-pre3/org/bukkit/Material.html
-# for all possible objects
-# If the material isn't a block then it will effectively do nothing as it can't be placed
-functional-materials:
-  - CHEST
-  - TRAPPED_CHEST
-  - BARREL
-  - HOPPER
-
-functional-tags:
-  - TRAPDOORS
-  - DOORS
-  - SHULKER_BOXES
-  - COPPER_CHESTS
-  - FENCE_GATES
-
-functional-types:
-  - CHEST
-  - DOOR

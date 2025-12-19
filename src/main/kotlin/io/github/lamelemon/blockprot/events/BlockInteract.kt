@@ -1,8 +1,8 @@
 package io.github.lamelemon.blockprot.events
 
-import io.github.lamelemon.blockprot.utils.utils.functionalMaterials
-import io.github.lamelemon.blockprot.utils.utils.isAllowedToInteract
-import io.github.lamelemon.blockprot.utils.utils.messagePlayer
+import io.github.lamelemon.blockprot.utils.Utils.functionalMaterials
+import io.github.lamelemon.blockprot.utils.Utils.isAllowedToInteract
+import io.github.lamelemon.blockprot.utils.Utils.messagePlayer
 import org.bukkit.block.Block
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler

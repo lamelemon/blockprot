@@ -1,7 +1,7 @@
 package io.github.lamelemon.blockprot.events
 
-import io.github.lamelemon.blockprot.utils.utils.functionalMaterials
-import io.github.lamelemon.blockprot.utils.utils.setOwner
+import io.github.lamelemon.blockprot.utils.Utils.functionalMaterials
+import io.github.lamelemon.blockprot.utils.Utils.setOwner
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
