@@ -1,8 +1,10 @@
 package io.github.lamelemon.blockprot.utils
 
-import io.github.lamelemon.blockprot.Blockprot.Companion.instance
-import io.github.lamelemon.blockprot.utils.UUIDListDataType.addUuid
-import io.github.lamelemon.blockprot.utils.UUIDListDataType.removeUuid
+import io.github.lamelemon.blockprot.BlockProt.Companion.instance
+import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType.addUuid
+import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType.removeUuid
+import io.github.lamelemon.blockprot.utils.dataTypes.UUIDDataType
+import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -15,12 +17,14 @@ object Utils {
 
     private val friendKey: NamespacedKey = NamespacedKey(instance, "friends")
     val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
+
     val functionalTags: HashSet<Tag<Material>> = HashSet(setOf(
         Tag.DOORS,
         Tag.TRAPDOORS,
         Tag.SHULKER_BOXES,
         Tag.COPPER_CHESTS
     ))
+
     val functionalMaterials: HashSet<Material> = HashSet(setOf(
         Material.CHEST,
         Material.TRAPPED_CHEST,
@@ -86,7 +90,10 @@ object Utils {
         return if (owner is Player) {
             isFriend(owner.persistentDataContainer, player)
         } else {
-            getOwner(dataContainer)?.let { Bukkit.getOfflinePlayer(it) }?.persistentDataContainer?.get(friendKey, UUIDListDataType)?.contains(player.uniqueId) == true
+            getOwner(dataContainer)?.let { Bukkit.getOfflinePlayer(it) }?.persistentDataContainer?.get(friendKey,
+                UUIDListDataType
+            )?.contains(player.uniqueId) == true
         }
     }
+
 }

@@ -10,9 +10,10 @@ import java.util.TreeSet
 import java.util.UUID
 
 class Friends: BasicCommand {
+
     val args: TreeSet<String> = TreeSet(setOf(
-        "list",
         "add",
+        "list",
         "remove"
     ))
 
@@ -60,6 +61,10 @@ class Friends: BasicCommand {
         }
 
         return super.suggest(commandSourceStack, args)
+    }
+
+    override fun permission(): String {
+        return "blockprot.permission.friends"
     }
 
     fun getFriendsList(commandSourceStack: CommandSourceStack): TreeSet<String> {

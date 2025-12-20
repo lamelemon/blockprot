@@ -1,7 +1,18 @@
 name: blockprot
 version: '1.0-SNAPSHOT'
-main: io.github.lamelemon.blockprot.Blockprot
+main: io.github.lamelemon.blockprot.BlockProt
 api-version: '1.21.10'
 prefix: BlockProt
 authors: [ lamelemon ]
 website: https://github.com/lamelemon/blockprot.git
+permissions:
+  blockprot.permission.friends:
+    description: "Permission to run /friends"
+    default: notop
+    children:
+      blockprot.permission.friends.list: true
+      blockprot.permission.friends.add: true
+      blockprot.permission.friends.remove: true
+  blockprot.permission.villager:
+    description: "Permission to claim villager ownership through /protectVillager"
+    default: notop
