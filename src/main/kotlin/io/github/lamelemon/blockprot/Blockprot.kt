@@ -1,6 +1,7 @@
 package io.github.lamelemon.blockprot
 
 import io.github.lamelemon.blockprot.commands.Friends
+import io.github.lamelemon.blockprot.commands.ProtectVillager
 import io.github.lamelemon.blockprot.events.BlockInteract
 import io.github.lamelemon.blockprot.events.BlockPlace
 import org.bukkit.Bukkit
@@ -8,10 +9,10 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
-class Blockprot : JavaPlugin() {
+class BlockProt : JavaPlugin() {
 
     companion object {
-        lateinit var instance: Blockprot
+        lateinit var instance: BlockProt
     }
 
     override fun onEnable() {
@@ -31,6 +32,13 @@ class Blockprot : JavaPlugin() {
         pluginManager.registerEvents(BlockPlace(), this)
         pluginManager.registerEvents(BlockInteract(), this)
 
-        registerCommand("friends", HashSet<String>(setOf("friend")), Friends())
+        registerCommand("friends", config.getStringList("friends.command-aliases"), Friends())
+        registerCommand("protectVillager",
+            config.getStringList("villagers.command-aliases"),
+            ProtectVillager(
+                config.getLong("villagers.timeout", 10L),
+                config.getBoolean("villagers.apply-glow", true)
+            )
+        )
     }
 }

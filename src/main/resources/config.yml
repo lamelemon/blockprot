@@ -1,2 +1,12 @@
 enabled: true
 
+friends:
+  command-aliases:
+    - friend
+
+villagers:
+  enabled: true # Will the plugin function for villagers?
+  command-aliases:
+    - pv
+  timeout: 10 # Timeout duration for after player runs the protect villager command.
+  apply-glow-on-register: true # Will villagers be given the glow effect for 1 second when their owner is registered
