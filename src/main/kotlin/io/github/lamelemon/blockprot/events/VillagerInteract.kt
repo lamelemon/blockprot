@@ -36,7 +36,7 @@ class VillagerInteract(val player: Player, timeout: Long, val applyGlow: Boolean
             if (Utils.isOwner(dataContainer, this.player)) { // Owner is player
                 Utils.messagePlayer(this.player, "<red>You already own this villager!</red>")
             } else {
-                Utils.messagePlayer(this.player, "<red>Someone already owns this villager!")
+                Utils.messagePlayer(this.player, "<red>Someone already owns this villager!</red>")
             }
 
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f)
@@ -59,7 +59,7 @@ class VillagerInteract(val player: Player, timeout: Long, val applyGlow: Boolean
     }
 
     override fun run() {
-        Utils.messagePlayer(this.player, "<red>Timed out! You didn't interact with a villager!")
+        Utils.messagePlayer(this.player, "<red>Timed out! You didn't interact with a villager!</red>")
         this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f)
         this.cancel()
     }
