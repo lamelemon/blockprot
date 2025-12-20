@@ -1,4 +1,4 @@
-package io.github.lamelemon.blockprot.utils
+package io.github.lamelemon.blockprot.utils.dataTypes
 
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataAdapterContext

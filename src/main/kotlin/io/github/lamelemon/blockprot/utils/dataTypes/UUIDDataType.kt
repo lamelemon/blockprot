@@ -1,4 +1,4 @@
-package io.github.lamelemon.blockprot.utils
+package io.github.lamelemon.blockprot.utils.dataTypes
 
 import org.bukkit.persistence.PersistentDataAdapterContext
 import org.bukkit.persistence.PersistentDataType
