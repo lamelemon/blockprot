@@ -37,18 +37,8 @@ class Friends: BasicCommand {
                     return
                 }
 
-                val friendsList: TreeSet<String> = TreeSet()
-                for (uuid: UUID in friends) {
-                    val player = sender.server.getPlayer(uuid)
-                    if (player is Player) {
-                        friendsList.add("<green>${player.name}</green>\n")
-                    } else {
-                        friendsList.add("<red>${sender.server.getOfflinePlayer(uuid).name}</red>\n")
-                    }
-                }
-
                 sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 1f)
-                Utils.messagePlayer(sender, "<dark_blue>Friends: </dark_blue>\n$friendsList")
+                Utils.messagePlayer(sender, "<dark_blue>Friends: </dark_blue>\n${parseFriendsList(sender, friends).joinToString("\n")}")
             }
         }
     }
@@ -57,7 +47,7 @@ class Friends: BasicCommand {
         if (args.isEmpty()) return this.args
 
         if (args[0] == "add" || args[0] == "remove") {
-            return getFriendsList(commandSourceStack)
+            return getFriendsList(commandSourceStack.sender as Player)
         }
 
         return super.suggest(commandSourceStack, args)
@@ -67,11 +57,21 @@ class Friends: BasicCommand {
         return "blockprot.permission.friends"
     }
 
-    fun getFriendsList(commandSourceStack: CommandSourceStack): TreeSet<String> {
-        TODO("Add functionality")
+    fun getFriendsList(player: Player): TreeSet<String> {
+        val friends = Utils.getFriends(player)
+        TODO("Not yet implemented")
     }
 
-    fun parseFriendsList(commandSourceStack: CommandSourceStack): TreeSet<String> {
-        TODO("Add functionality")
+    fun parseFriendsList(player: Player, friends: List<UUID>): List<String> {
+        val friendsList: TreeSet<String> = TreeSet()
+        for (uuid: UUID in friends) {
+            val friend = player.server.getPlayer(uuid)
+            if (friend is Player) {
+                friendsList.add("<green>${friend.name}</green>\n")
+            } else {
+                friendsList.add("<red>${player.server.getOfflinePlayer(uuid).name}</red>\n")
+            }
+        }
+        return friendsList.sorted()
     }
 }

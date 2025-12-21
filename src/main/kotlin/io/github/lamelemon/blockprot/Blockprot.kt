@@ -36,7 +36,7 @@ class BlockProt : JavaPlugin() {
         registerCommand("protectVillager",
             config.getStringList("villagers.command-aliases"),
             ProtectVillager(
-                config.getLong("villagers.timeout", 10L),
+                config.getLong("villagers.timeout", 10L) * 20,
                 config.getBoolean("villagers.apply-glow", true)
             )
         )

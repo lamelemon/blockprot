@@ -38,7 +38,7 @@ object Utils {
     ))
 
     fun messagePlayer(player: Player, message: String) {
-        player.sendRichMessage("<gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message")
+        player.sendRichMessage("<white><gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message</white>")
     }
 
     fun addFriend(player: Player, friend: Player) {
@@ -84,16 +84,17 @@ object Utils {
     }
 
     fun isAllowedToInteract(dataContainer: PersistentDataContainer, player: Player): Boolean {
-        if (isFriend(dataContainer, player) || isOwner(dataContainer, player)) return true
+        if (isFriend(dataContainer, player)) return true
+        if (isOwner(dataContainer, player)) return true
 
-        val owner = getOwner(dataContainer)?.let { Bukkit.getPlayer(it) }
-        return if (owner is Player) {
-            isFriend(owner.persistentDataContainer, player)
+        val owner = getOwner(dataContainer)
+        if (owner !is UUID) return true
+        val owningPlayer: Player? = player.server.getPlayer(owner)
+
+        return if (owningPlayer is Player) {
+            isFriend(owningPlayer.persistentDataContainer, player)
         } else {
-            getOwner(dataContainer)?.let { Bukkit.getOfflinePlayer(it) }?.persistentDataContainer?.get(friendKey,
-                UUIDListDataType
-            )?.contains(player.uniqueId) == true
+            player.server.getOfflinePlayer(owner).persistentDataContainer.get(friendKey, UUIDListDataType)?.contains(player.uniqueId) == true
         }
     }
-
 }
