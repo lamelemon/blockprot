@@ -5,9 +5,9 @@ import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType.addUuid
 import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType.removeUuid
 import io.github.lamelemon.blockprot.utils.dataTypes.UUIDDataType
 import io.github.lamelemon.blockprot.utils.dataTypes.UUIDListDataType
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.Sound
 import org.bukkit.Tag
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -41,6 +41,11 @@ object Utils {
         player.sendRichMessage("<white><gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message</white>")
     }
 
+    fun notifyPlayer(player: Player, message: String, sound: Sound) {
+        messagePlayer(player, message)
+        player.playSound(player, sound, 1f, 1f)
+    }
+
     fun addFriend(player: Player, friend: Player) {
         player.persistentDataContainer.addUuid(friendKey, friend.uniqueId)
     }
@@ -65,8 +70,16 @@ object Utils {
         return dataContainer.get(friendKey, UUIDListDataType)?.contains(friend.uniqueId) ?: false
     }
 
+    fun isFriend(player: Player, friend: Player): Boolean {
+        return player.persistentDataContainer.get(friendKey, UUIDListDataType)?.contains(friend.uniqueId) ?: false
+    }
+
     fun isOwner(dataContainer: PersistentDataContainer, player: Player): Boolean {
         return dataContainer.get(ownerKey, UUIDDataType) == player.uniqueId
+    }
+
+    fun hasOwner(dataContainer: PersistentDataContainer): Boolean {
+        return dataContainer.get(ownerKey, UUIDDataType) is UUID
     }
 
     fun setOwner(dataContainer: PersistentDataContainer, owner: Player) {
