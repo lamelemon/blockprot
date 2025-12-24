@@ -1,6 +1,6 @@
 package io.github.lamelemon.blockprot.commands
 
-import io.github.lamelemon.blockprot.events.VillagerInteract
+import io.github.lamelemon.blockprot.events.entity.VillagerProtect
 import io.github.lamelemon.blockprot.utils.Utils
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -16,7 +16,7 @@ class ProtectVillager(val timeoutDuration: Long, val applyGlow: Boolean): BasicC
         if (sender !is Player) return
 
         Utils.messagePlayer(sender, "Right click a villager to register ownership!")
-        VillagerInteract(sender, timeoutDuration, applyGlow)
+        VillagerProtect(sender, timeoutDuration, applyGlow)
     }
 
     /*override fun permission(): String {

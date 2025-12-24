@@ -1,4 +1,4 @@
-package io.github.lamelemon.blockprot.events
+package io.github.lamelemon.blockprot.events.block
 
 import io.github.lamelemon.blockprot.utils.Utils.functionalMaterials
 import io.github.lamelemon.blockprot.utils.Utils.isAllowedToInteract
