@@ -1,18 +1,28 @@
 name: blockprot
 version: '1.0-SNAPSHOT'
 main: io.github.lamelemon.blockprot.BlockProt
-api-version: '1.21.10'
+api-version: '1.21.11'
 prefix: BlockProt
 authors: [ lamelemon ]
-website: https://github.com/lamelemon/blockprot.git
+website: https://github.com/lamelemon/blockprot
 permissions:
   blockprot.permission.friends:
     description: "Permission to run /friends"
-    default: notop
+    default: true
     children:
       blockprot.permission.friends.list: true
       blockprot.permission.friends.add: true
       blockprot.permission.friends.remove: true
   blockprot.permission.villager:
-    description: "Permission to claim villager ownership through /protectVillager"
-    default: notop
+    description: "Permission to use villager related features"
+    default: true
+    children:
+      blockprot.permission.protect: true
+      blockprot.permission.bypass: false # Can player bypass villager ownership
+  blockprot.permission.block:
+    description: "Permission to use block related features"
+    default: true
+    children:
+      blockprot.permission.claim: true
+      blockprot.permission.bypass: false # Can player bypass block ownership
+      blockprot.permission.unlock: false # Can player remove ownership from other's blocks
