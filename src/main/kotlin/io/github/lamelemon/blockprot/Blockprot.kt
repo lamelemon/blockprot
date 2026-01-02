@@ -46,6 +46,5 @@ class BlockProt : JavaPlugin() {
                 )
             )
         }
-
     }
 }

@@ -9,20 +9,15 @@ permissions:
   blockprot.permission.friends:
     description: "Permission to run /friends"
     default: true
-    children:
-      blockprot.permission.friends.list: true
-      blockprot.permission.friends.add: true
-      blockprot.permission.friends.remove: true
-  blockprot.permission.villager:
+  blockprot.permission.villager.protect:
     description: "Permission to use villager related features"
     default: true
-    children:
-      blockprot.permission.protect: true
-      blockprot.permission.bypass: false # Can player bypass villager ownership
-  blockprot.permission.block:
+  blockprot.permission.block.claim:
     description: "Permission to use block related features"
     default: true
+  blockprot.permission.admin:
+    description: "Permission to bypass"
+    default: op
     children:
-      blockprot.permission.claim: true
-      blockprot.permission.bypass: false # Can player bypass block ownership
-      blockprot.permission.unlock: false # Can player remove ownership from other's blocks
+      bypass: true
+      unlock: true

@@ -17,7 +17,7 @@ import java.util.UUID
 
 // This class is meant to be constructed whenever a player runs the /protectVillager command
 class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean): Listener, BukkitRunnable() {
-    lateinit var clickedVillager: Villager
+    var clickedVillager: Villager? = null
 
     init {
         Bukkit.getPluginManager().registerEvents(this, BlockProt.instance)
@@ -44,8 +44,8 @@ class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean)
         val owner = Utils.getOwner(dataContainer)
         if (owner is UUID) { // Someone already owns the villager
             if (owner == this.player.uniqueId) { // Owner is player
-                clickedVillager = entity
                 Utils.messagePlayer(this.player, "<red>You already own this villager! Click it again to remove your ownership from it!</red>")
+                clickedVillager = entity
             } else {
                 Utils.messagePlayer(this.player, "<red>Someone already owns this villager!</red>")
                 event.isCancelled = true
@@ -74,7 +74,7 @@ class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean)
         super.cancel()
     }
 
-    fun applyGlow(entity: Entity) {
+    private fun applyGlow(entity: Entity) {
         if (applyGlow) {
             entity.isGlowing = true
             Bukkit.getScheduler().runTaskLater(BlockProt.instance, Runnable{

@@ -1,9 +1,9 @@
-package io.github.lamelemon.blockprot.utils.dataTypes
+package io.github.lamelemon.blockprot.utils
 
 import org.bukkit.persistence.PersistentDataAdapterContext
 import org.bukkit.persistence.PersistentDataType
 import java.nio.ByteBuffer
-import java.util.*
+import java.util.UUID
 
 object UUIDDataType: PersistentDataType<ByteArray, UUID> {
 

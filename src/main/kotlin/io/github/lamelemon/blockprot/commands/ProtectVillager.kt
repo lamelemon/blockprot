@@ -19,7 +19,7 @@ class ProtectVillager(val timeoutDuration: Long, val applyGlow: Boolean): BasicC
         VillagerProtect(sender, timeoutDuration, applyGlow)
     }
 
-    /*override fun permission(): String {
-        return "blockprot.permission.villager"
-    }*/
+    override fun permission(): String {
+        return "blockprot.permission.villager.protect"
+    }
 }

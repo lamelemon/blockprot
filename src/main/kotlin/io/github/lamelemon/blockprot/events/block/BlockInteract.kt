@@ -1,14 +1,14 @@
 package io.github.lamelemon.blockprot.events.block
 
-import io.github.lamelemon.blockprot.utils.Utils.functionalMaterials
-import io.github.lamelemon.blockprot.utils.Utils.isAllowedToInteract
-import io.github.lamelemon.blockprot.utils.Utils.messagePlayer
+import io.github.lamelemon.blockprot.utils.Utils
 import org.bukkit.block.Block
+import org.bukkit.block.Chest
+import org.bukkit.block.DoubleChest
+import org.bukkit.block.TileState
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.persistence.PersistentDataHolder
 
 class BlockInteract: Listener {
 
@@ -18,14 +18,14 @@ class BlockInteract: Listener {
         val block = event.clickedBlock
         if (block !is Block) return
 
-        if (!functionalMaterials.contains(block.type)) return
-
         val blockState = block.state
-        if (blockState !is PersistentDataHolder) return
+        if (blockState !is TileState) return
+        if (Utils.isIgnored(blockState.type)) return
 
-        if (!isAllowedToInteract(blockState.persistentDataContainer, event.player)) {
+        val player = event.player
+        if (!Utils.isAllowedToInteract(blockState.persistentDataContainer, player)) {
             event.setUseInteractedBlock(Event.Result.DENY)
-            messagePlayer(event.player, "Not allowed to interact with this block!")
+            Utils.messagePlayer(player,"<red>You are not allowed to interact with this block!</red>")
         }
     }
 }
