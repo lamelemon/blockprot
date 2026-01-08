@@ -111,18 +111,12 @@ object Utils {
     }
 
     fun isAllowedToInteract(dataContainer: PersistentDataContainer, player: Player): Boolean {
-        if (isFriend(dataContainer, player)) {
-            messagePlayer(player, "you're a friend")
-            return true
-        }
-        if (isOwner(dataContainer, player)) {
-            messagePlayer(player, "you own this")
-            return true
-        }
+        if (isFriend(dataContainer, player)) return true
+        if (isOwner(dataContainer, player)) return true
 
         val owner = getOwner(dataContainer)
         if (owner !is UUID) return true
-        val owningPlayer: Player? = player.server.getPlayer(owner)
+        val owningPlayer = player.server.getPlayer(owner)
 
         return if (owningPlayer is Player) {
             isFriend(owningPlayer.persistentDataContainer, player)
