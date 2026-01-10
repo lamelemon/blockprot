@@ -34,6 +34,9 @@ object Utils {
         Material.END_GATEWAY,
         Material.TRIAL_SPAWNER,
         Material.VAULT,
+        Material.COMMAND_BLOCK,
+        Material.CHAIN_COMMAND_BLOCK,
+        Material.REPEATING_COMMAND_BLOCK
     ) + Tag.BANNERS.values
         + Tag.BEDS.values
         + Tag.COPPER_GOLEM_STATUES.values
