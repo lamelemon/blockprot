@@ -5,9 +5,8 @@ import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import org.bukkit.Sound
 import org.bukkit.entity.Player
+import java.util.*
 import java.util.Locale.getDefault
-import java.util.TreeSet
-import java.util.UUID
 
 class Friends: BasicCommand {
 

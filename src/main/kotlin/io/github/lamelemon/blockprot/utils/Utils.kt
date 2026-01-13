@@ -9,12 +9,21 @@ import org.bukkit.block.TileState
 import org.bukkit.entity.Player
 import org.bukkit.persistence.ListPersistentDataType
 import org.bukkit.persistence.PersistentDataContainer
+import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
 object Utils {
 
     private val friendKey: NamespacedKey = NamespacedKey(instance, "friends")
     private val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
+    private val lockStateKey: NamespacedKey = NamespacedKey(instance, "lockstate")
+
+    enum class LockState(val state: String, val index: Byte) {
+        OWNER("owner", 1),
+        FRIENDS("friends", 2),
+        ANYONE("anyone", 3)
+    }
+
     private val uuidListDataType = ListPersistentDataType.LIST.listTypeFrom(UUIDDataType)
     private val ignoredMaterials: HashSet<Material> = HashSet(setOf(
         Material.BEEHIVE,
@@ -79,11 +88,11 @@ object Utils {
     }
 
     fun isFriend(dataContainer: PersistentDataContainer, friend: Player): Boolean {
-        return dataContainer.get(friendKey, uuidListDataType)?.contains(friend.uniqueId) ?: false
+        return dataContainer.get(friendKey, uuidListDataType)?.contains(friend.uniqueId) == true
     }
 
     fun isFriend(player: Player, friend: Player): Boolean {
-        return player.persistentDataContainer.get(friendKey, uuidListDataType)?.contains(friend.uniqueId) ?: false
+        return player.persistentDataContainer.get(friendKey, uuidListDataType)?.contains(friend.uniqueId) == true
     }
 
     fun isOwner(dataContainer: PersistentDataContainer, player: Player): Boolean {
@@ -113,9 +122,32 @@ object Utils {
         }
     }
 
+    fun removeOwner(tileState: TileState) {
+        removeOwner(tileState.persistentDataContainer)
+        tileState.update()
+    }
+
+    fun setLockState(tileState: TileState, newState: LockState) {
+        tileState.persistentDataContainer.set(lockStateKey, PersistentDataType.BYTE, newState.index)
+        tileState.update()
+    }
+
+    fun setLockState(tileState: TileState, newState: Byte) {
+        tileState.persistentDataContainer.set(lockStateKey, PersistentDataType.BYTE, newState)
+        tileState.update()
+    }
+
+    fun getLockState(dataContainer: PersistentDataContainer): Byte {
+        return dataContainer.getOrDefault(lockStateKey, PersistentDataType.BYTE, 2)
+    }
+
     fun isAllowedToInteract(dataContainer: PersistentDataContainer, player: Player): Boolean {
-        if (isFriend(dataContainer, player)) return true
         if (isOwner(dataContainer, player)) return true
+
+        val currentLockState = getLockState(dataContainer)
+        if (currentLockState == LockState.ANYONE.index) return true
+        if (currentLockState != LockState.FRIENDS.index) return false
+        if (isFriend(dataContainer, player)) return true
 
         val owner = getOwner(dataContainer)
         if (owner !is UUID) return true

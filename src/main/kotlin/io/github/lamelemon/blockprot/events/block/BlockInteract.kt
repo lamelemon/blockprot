@@ -1,18 +1,15 @@
 package io.github.lamelemon.blockprot.events.block
 
-import io.github.lamelemon.blockprot.BlockProt.Companion.instance
-import io.github.lamelemon.blockprot.utils.Dialogs
+import com.destroystokyo.paper.event.block.BlockDestroyEvent
+import io.github.lamelemon.blockprot.utils.BlockOwnerDialog
 import io.github.lamelemon.blockprot.utils.Utils
-import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.TileState
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.BlockBurnEvent
-import org.bukkit.event.block.BlockExplodeEvent
-import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import java.util.Locale.getDefault
 
 
 class BlockInteract: Listener {
@@ -34,45 +31,27 @@ class BlockInteract: Listener {
             event.setUseInteractedBlock(Event.Result.DENY)
             Utils.messagePlayer(player,"<red>You are not allowed to interact with this block!</red>")
         }
-        else if (Utils.isOwner(dataContainer, player) && player.isSneaking && player.inventory.itemInMainHand.isEmpty) {
-            Dialogs.createBlockDialog(player, block)
+        else if (player.isSneaking && player.inventory.itemInMainHand.isEmpty) {
+            if (Utils.isOwner(dataContainer, player)) {
+                event.setUseInteractedBlock(Event.Result.DENY)
+                BlockOwnerDialog(player, block, blockState)
+            }
+            else if (!Utils.hasOwner(dataContainer)) {
+                Utils.setOwner(blockState, player)
+                Utils.messagePlayer(player, "<green>Took ownership of ${block.type.name.lowercase().replaceFirstChar { it.titlecase(getDefault()) }}</green>")
+            }
         }
     }
 
     @EventHandler
-    fun blockBurn(event: BlockBurnEvent) {
+    fun blockDestroy(event: BlockDestroyEvent) {
         if (event.isCancelled) return
 
         val blockState = event.block.state
         if (blockState !is TileState) return
-        if (Utils.isIgnored(blockState.type)) return
 
         if (Utils.hasOwner(blockState.persistentDataContainer)) {
             event.isCancelled = true
         }
-    }
-
-    @EventHandler
-    fun blockExplode(event: BlockExplodeEvent) {
-        if (event.isCancelled) return
-        filterExplosion(event.blockList())
-    }
-
-    @EventHandler
-    fun entityExplode(event: EntityExplodeEvent) {
-        if (event.isCancelled) return
-        filterExplosion(event.blockList())
-    }
-
-    private fun filterExplosion(blocks: MutableList<Block>) {
-        val startTime = System.nanoTime()
-
-        blocks.removeIf { block ->
-            block.state is TileState &&
-                    !Utils.isIgnored(block.type) &&
-                    Utils.hasOwner((block.state as TileState).persistentDataContainer)
-        }
-
-        instance.logger.info("took ${(System.nanoTime() - startTime)}ns")
     }
 }

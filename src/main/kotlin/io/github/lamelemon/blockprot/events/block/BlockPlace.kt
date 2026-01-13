@@ -2,18 +2,15 @@ package io.github.lamelemon.blockprot.events.block
 
 import io.github.lamelemon.blockprot.BlockProt.Companion.instance
 import io.github.lamelemon.blockprot.utils.Utils
-import jdk.jshell.execution.Util
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.block.Chest
 import org.bukkit.block.DoubleChest
-import org.bukkit.block.data.type.Chest as ChestData
 import org.bukkit.block.TileState
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.inventory.DoubleChestInventory
-import org.bukkit.inventory.InventoryHolder
+import org.bukkit.block.data.type.Chest as ChestData
 
 class BlockPlace: Listener {
 
