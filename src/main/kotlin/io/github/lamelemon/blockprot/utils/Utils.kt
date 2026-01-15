@@ -107,8 +107,17 @@ object Utils {
         dataContainer.set(ownerKey, UUIDDataType, owner.uniqueId)
     }
 
+    fun setOwner(dataContainer: PersistentDataContainer, owner: UUID) {
+        dataContainer.set(ownerKey, UUIDDataType, owner)
+    }
+
     fun setOwner(tileState: TileState, owner: Player) {
         tileState.persistentDataContainer.set(ownerKey, UUIDDataType, owner.uniqueId)
+        tileState.update()
+    }
+
+    fun setOwner(tileState: TileState, owner: UUID) {
+        tileState.persistentDataContainer.set(ownerKey, UUIDDataType, owner)
         tileState.update()
     }
 

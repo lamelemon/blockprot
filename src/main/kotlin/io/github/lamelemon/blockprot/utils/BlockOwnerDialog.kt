@@ -13,10 +13,13 @@ import net.kyori.adventure.text.event.ClickCallback
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Sound
 import org.bukkit.block.Block
+import org.bukkit.block.Chest
+import org.bukkit.block.DoubleChest
 import org.bukkit.block.TileState
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import java.util.Locale.getDefault
+import org.bukkit.block.data.type.Chest as ChestData
 
 class BlockOwnerDialog(val player: Player, val block: Block, val tileState: TileState): Listener {
 
@@ -77,6 +80,18 @@ class BlockOwnerDialog(val player: Player, val block: Block, val tileState: Tile
                                         Utils.removeOwner(tileState)
                                         Utils.setLockState(tileState, Utils.LockState.FRIENDS)
                                         Utils.notifyPlayer(player, "Removed ownership of block! Sneak + Use to reclaim ownership!", Sound.BLOCK_NOTE_BLOCK_PLING)
+                                        if (tileState is Chest && (tileState.blockData as ChestData).type != ChestData.Type.SINGLE) {
+                                            val doubleChest = tileState.inventory.holder as DoubleChest
+
+                                            // Slightly confusing, this is how it works though.
+                                            val otherChest = if ((tileState.blockData as ChestData).type == ChestData.Type.LEFT) doubleChest.leftSide
+                                            else doubleChest.rightSide
+
+                                            if (Utils.isOwner((otherChest as TileState).persistentDataContainer, player)) {
+                                                Utils.removeOwner(otherChest)
+                                                Utils.setLockState(otherChest, Utils.LockState.FRIENDS)
+                                            }
+                                        }
                                     },
                                     ClickCallback.Options.builder()
                                         .uses(1)
