@@ -32,7 +32,7 @@ class BlockInteract: Listener {
             Utils.messagePlayer(player,"<red>You are not allowed to interact with this block!</red>")
         }
         else if (player.isSneaking && player.inventory.itemInMainHand.isEmpty) {
-            if (Utils.isOwner(dataContainer, player)) {
+            if (Utils.isOwner(dataContainer, player) || player.hasPermission("blockprot.permission.admin.unlock")) {
                 event.setUseInteractedBlock(Event.Result.DENY)
                 BlockOwnerDialog(player, block, blockState)
             }

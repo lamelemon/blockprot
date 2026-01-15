@@ -7,16 +7,16 @@ authors: [ lamelemon ]
 website: https://github.com/lamelemon/blockprot
 permissions:
   blockprot.permission.friends:
-    description: "Permission to run /friends"
+    description: "Permission to run /friends."
     default: true
   blockprot.permission.villager.protect:
-    description: "Permission to use villager related features"
+    description: "Permission to use villager related features."
     default: true
   blockprot.permission.block.claim:
-    description: "Permission to use block related features"
+    description: "Permission to use block related features."
     default: true
   blockprot.permission.admin:
-    description: "Permission to bypass"
+    description: "Permission to bypass/unlock things."
     default: op
     children:
       bypass: true

@@ -143,6 +143,7 @@ object Utils {
 
     fun isAllowedToInteract(dataContainer: PersistentDataContainer, player: Player): Boolean {
         if (isOwner(dataContainer, player)) return true
+        if (player.hasPermission("blockprot.permission.admin.bypass")) return true
 
         val currentLockState = getLockState(dataContainer)
         if (currentLockState == LockState.ANYONE.index) return true
