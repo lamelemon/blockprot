@@ -3,6 +3,7 @@ package io.github.lamelemon.blockprot.events.block
 import com.destroystokyo.paper.event.block.BlockDestroyEvent
 import io.github.lamelemon.blockprot.utils.BlockOwnerDialog
 import io.github.lamelemon.blockprot.utils.Utils
+import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.block.Chest
 import org.bukkit.block.DoubleChest
@@ -10,6 +11,7 @@ import org.bukkit.block.TileState
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import java.util.Locale.getDefault
 import java.util.UUID
@@ -71,8 +73,19 @@ class BlockInteract: Listener {
         val blockState = event.block.state
         if (blockState !is TileState) return
 
-        if (Utils.hasOwner(blockState.persistentDataContainer)) {
+        if (Utils.hasOwner(blockState.persistentDataContainer)) event.isCancelled = true
+    }
+
+    @EventHandler
+    fun blockBreak(event: BlockBreakEvent) {
+        if (event.isCancelled) return
+
+        val blockState = event.block.state
+        if (blockState !is TileState) return
+
+        if (!Utils.isOwner(blockState.persistentDataContainer, event.player)) {
             event.isCancelled = true
+            Utils.notifyPlayer(event.player, "<red>You are not allowed to break this block!</red>", Sound.BLOCK_NOTE_BLOCK_PLING)
         }
     }
 }
