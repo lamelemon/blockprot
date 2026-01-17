@@ -59,18 +59,16 @@ class Friends: BasicCommand {
 
         return when (args[0]) {
             "add" -> {
-                commandSourceStack.sender.server.onlinePlayers.map { it.name }
+                val friends = getFriendsList(commandSourceStack.sender as Player)
+                commandSourceStack.sender.server.onlinePlayers.map { it.name }.filter { !friends.contains(it) }
             }
-
             "remove" -> {
-                getFriendsList(commandSourceStack.sender as Player)
+                val friends = getFriendsList(commandSourceStack.sender as Player)
+                if (args.size > 1) friends.filter { it.startsWith(args[1]) }
+                else friends
             }
-
-            else -> {
-                super.suggest(commandSourceStack, args)
-            }
+            else -> super.suggest(commandSourceStack, args)
         }
-
     }
 
     override fun permission(): String {
