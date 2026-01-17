@@ -102,8 +102,7 @@ class BlockInteract: Listener {
         val blockState = event.block.state
         if (blockState !is TileState) return
 
-        val ownerUUID = Utils.getOwner(blockState.persistentDataContainer)
-        if (ownerUUID !is UUID || ownerUUID == event.player.uniqueId) {
+        if (!Utils.isOwner(blockState.persistentDataContainer, event.player)) {
             event.isCancelled = true
             Utils.notifyPlayer(event.player, "<red>You are not allowed to break this block!</red>", Sound.BLOCK_NOTE_BLOCK_PLING)
         }
