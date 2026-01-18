@@ -25,7 +25,8 @@ object Utils {
     }
 
     private val uuidListDataType = ListPersistentDataType.LIST.listTypeFrom(UUIDDataType)
-    private val ignoredMaterials: HashSet<Material> = HashSet(setOf(
+    val newignoredMaterials: HashSet<Material> = hashSetOf()
+    /*public val ignoredMaterials: HashSet<Material> = HashSet(setOf(
         Material.BEEHIVE,
         Material.BELL,
         Material.SUSPICIOUS_GRAVEL,
@@ -54,7 +55,7 @@ object Utils {
         + Tag.SIGNS.values
         + Tag.WOODEN_SHELVES.values
         + Tag.ITEMS_SKULLS.values
-        )
+        )*/
 
     fun messagePlayer(player: Player, message: String) {
         player.sendRichMessage("<white><gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message</white>")
@@ -66,7 +67,7 @@ object Utils {
     }
 
     fun isIgnored(material: Material): Boolean { // Keep separate from tile entity check as we may want to store non-tile entities later in a different way
-        return ignoredMaterials.contains(material)
+        return newignoredMaterials.contains(material)
     }
 
     fun addFriend(player: Player, friend: Player) {

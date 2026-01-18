@@ -5,7 +5,9 @@ import io.github.lamelemon.blockprot.commands.ProtectVillager
 import io.github.lamelemon.blockprot.events.block.BlockInteract
 import io.github.lamelemon.blockprot.events.block.BlockPlace
 import io.github.lamelemon.blockprot.events.entity.VillagerInteract
+import io.github.lamelemon.blockprot.utils.Utils
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -34,6 +36,9 @@ class BlockProt : JavaPlugin() {
         pluginManager.registerEvents(BlockInteract(), this)
 
         registerCommand("friends", config.getStringList("friends.command-aliases"), Friends())
+
+        val ignoredMaterials = config.getStringList("ignored-materials")
+        ignoredMaterials.forEach { Utils.newignoredMaterials.add(Material.valueOf(it)) }
 
         if (config.getBoolean("villagers.enabled", true)) {
             pluginManager.registerEvents(VillagerInteract(), this)
