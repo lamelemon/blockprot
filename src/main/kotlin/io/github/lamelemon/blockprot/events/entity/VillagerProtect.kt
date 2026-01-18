@@ -37,6 +37,7 @@ class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean)
             Utils.removeOwner(dataContainer)
             Utils.notifyPlayer(this.player, "<green>Successfully removed your ownership of this villager!", Sound.BLOCK_NOTE_BLOCK_PLING)
             applyGlow(entity)
+            event.isCancelled = true
             this.cancel()
             return
         }
@@ -48,13 +49,14 @@ class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean)
                 clickedVillager = entity
             } else {
                 Utils.messagePlayer(this.player, "<red>Someone already owns this villager!</red>")
-                event.isCancelled = true
             }
 
+            event.isCancelled = true
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f)
             return
         }
 
+        event.isCancelled = true
         Utils.setOwner(dataContainer, this.player)
         Utils.messagePlayer(this.player, "<green>Registered this villager to you!</green>")
         this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 1f)

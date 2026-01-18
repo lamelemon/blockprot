@@ -55,16 +55,16 @@ class Friends: BasicCommand {
 
     override fun suggest(commandSourceStack: CommandSourceStack, args: Array<out String>): Collection<String> {
         if (args.isEmpty()) return this.args
-        if (args.size > 2) return super.suggest(commandSourceStack, args)
+        if (args.size < 2) return super.suggest(commandSourceStack, args)
 
         return when (args[0]) {
             "add" -> {
                 val friends = getFriendsList(commandSourceStack.sender as Player)
-                commandSourceStack.sender.server.onlinePlayers.map { it.name }.filter { !friends.contains(it) }
+                commandSourceStack.sender.server.onlinePlayers.map { it.name }.filter { !friends.contains(it) && it.lowercase(getDefault()).startsWith(args[args.size - 1].lowercase(getDefault()))  }
             }
             "remove" -> {
                 val friends = getFriendsList(commandSourceStack.sender as Player)
-                if (args.size > 1) friends.filter { it.startsWith(args[1]) }
+                if (args.size == 2) friends.filter { it.lowercase(getDefault()).startsWith(args[args.size - 1].lowercase(getDefault())) }
                 else friends
             }
             else -> super.suggest(commandSourceStack, args)

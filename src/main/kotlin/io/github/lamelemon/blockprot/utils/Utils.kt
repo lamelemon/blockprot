@@ -1,6 +1,7 @@
 package io.github.lamelemon.blockprot.utils
 
 import io.github.lamelemon.blockprot.BlockProt.Companion.instance
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Sound
@@ -163,13 +164,13 @@ object Utils {
         if (isFriend(dataContainer, player)) return true
 
         val owner = getOwner(dataContainer)
-        if (owner !is UUID) return true
+        if (owner !is UUID) return true // block has no owner
         val owningPlayer = player.server.getPlayer(owner)
 
         return if (owningPlayer is Player) {
             isFriend(owningPlayer.persistentDataContainer, player)
         } else {
-            player.server.getOfflinePlayer(owner).persistentDataContainer.get(friendKey, uuidListDataType)?.contains(player.uniqueId) == true
+            Bukkit.getPlayer(owner)?.persistentDataContainer?.get(friendKey, uuidListDataType)?.contains(player.uniqueId) == true
         }
     }
 
