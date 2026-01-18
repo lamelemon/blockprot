@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.lamelemon"
-version = "1.1.5"
+version = "1.1.7"
 
 repositories {
     mavenCentral()

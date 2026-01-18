@@ -33,6 +33,7 @@ object Utils {
         Material.CALIBRATED_SCULK_SENSOR,
         Material.SCULK_CATALYST,
         Material.SCULK_SENSOR,
+        Material.SCULK_SHRIEKER,
         Material.CHISELED_BOOKSHELF,
         Material.COMPARATOR,
         Material.CREAKING_HEART,
@@ -45,7 +46,8 @@ object Utils {
         Material.VAULT,
         Material.COMMAND_BLOCK,
         Material.CHAIN_COMMAND_BLOCK,
-        Material.REPEATING_COMMAND_BLOCK
+        Material.REPEATING_COMMAND_BLOCK,
+        Material.ENDER_CHEST
     ) + Tag.BANNERS.values
         + Tag.BEDS.values
         + Tag.COPPER_GOLEM_STATUES.values
