@@ -1,5 +1,9 @@
 enabled: true
 
+# Should the plugin ignore things such as chests that have naturally generated
+# (Subinterfaces of https://jd.papermc.io/paper/1.21.11/com/destroystokyo/paper/loottable/LootableBlockInventory.html)
+ignore-natural-lootables: true
+
 friends:
   command-aliases:
     - friend

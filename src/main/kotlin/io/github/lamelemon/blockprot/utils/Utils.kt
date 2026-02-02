@@ -130,9 +130,7 @@ object Utils {
     }
 
     fun removeOwner(dataContainer: PersistentDataContainer) {
-        if (dataContainer.has(ownerKey)) {
-            dataContainer.remove(ownerKey)
-        }
+        if (dataContainer.has(ownerKey)) dataContainer.remove(ownerKey)
     }
 
     fun removeOwner(tileState: TileState) {
@@ -150,7 +148,7 @@ object Utils {
         tileState.update()
     }
 
-    fun getLockState(dataContainer: PersistentDataContainer): Byte {
+    fun getLockState(dataContainer: PersistentDataContainer): Byte? {
         return dataContainer.getOrDefault(lockStateKey, PersistentDataType.BYTE, 2)
     }
 
@@ -170,7 +168,7 @@ object Utils {
         return if (owningPlayer is Player) {
             isFriend(owningPlayer.persistentDataContainer, player)
         } else {
-            Bukkit.getPlayer(owner)?.persistentDataContainer?.get(friendKey, uuidListDataType)?.contains(player.uniqueId) == true
+            Bukkit.getOfflinePlayer(owner).persistentDataContainer.get(friendKey, uuidListDataType)?.contains(player.uniqueId) == true
         }
     }
 

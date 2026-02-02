@@ -87,7 +87,7 @@ class BlockOwnerDialog(val player: Player, val block: Block, val tileState: Tile
                                             val otherChest = if ((tileState.blockData as ChestData).type == ChestData.Type.LEFT) doubleChest.leftSide
                                             else doubleChest.rightSide
 
-                                            if (Utils.isOwner((otherChest as TileState).persistentDataContainer, player)) {
+                                            if (Utils.isOwner((otherChest as TileState).persistentDataContainer, player) || player.hasPermission("blockprot.permission.admin.unlock")) {
                                                 Utils.removeOwner(otherChest)
                                                 Utils.setLockState(otherChest, Utils.LockState.FRIENDS)
                                             }

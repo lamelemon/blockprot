@@ -33,12 +33,9 @@ class BlockProt : JavaPlugin() {
         instance = this
 
         pluginManager.registerEvents(BlockPlace(), this)
-        pluginManager.registerEvents(BlockInteract(), this)
+        pluginManager.registerEvents(BlockInteract(config.getBoolean("ignore-natural-lootables", true)), this)
 
         registerCommand("friends", config.getStringList("friends.command-aliases"), Friends())
-
-        val ignoredMaterials = config.getStringList("ignored-materials")
-        ignoredMaterials.forEach { Utils.newignoredMaterials.add(Material.valueOf(it)) }
 
         if (config.getBoolean("villagers.enabled", true)) {
             pluginManager.registerEvents(VillagerInteract(), this)

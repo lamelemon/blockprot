@@ -1,6 +1,7 @@
 package io.github.lamelemon.blockprot.events.block
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent
+import com.destroystokyo.paper.loottable.LootableBlockInventory
 import io.github.lamelemon.blockprot.utils.BlockOwnerDialog
 import io.github.lamelemon.blockprot.utils.Utils
 import org.bukkit.Sound
@@ -21,7 +22,7 @@ import java.util.Locale.getDefault
 import org.bukkit.block.data.type.Chest as ChestData
 
 
-class BlockInteract: Listener {
+class BlockInteract(val ignoreLootables: Boolean): Listener {
 
     @EventHandler
     fun blockInteract(event: PlayerInteractEvent) {
@@ -79,6 +80,8 @@ class BlockInteract: Listener {
                 event.setUseInteractedBlock(Event.Result.DENY)
             }
             else if (!Utils.hasOwner(dataContainer)) {
+                if (ignoreLootables && blockState is LootableBlockInventory && blockState.hasLootTable()) return
+
                 Utils.setOwner(blockState, player)
                 Utils.messagePlayer(player, "<green>Took ownership of ${block.type.name.lowercase().replaceFirstChar { it.titlecase(getDefault()) }}</green>")
             }
