@@ -5,7 +5,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Sound
-import org.bukkit.Tag
 import org.bukkit.block.TileState
 import org.bukkit.entity.Player
 import org.bukkit.persistence.ListPersistentDataType
@@ -26,7 +25,7 @@ object Utils {
     }
 
     private val uuidListDataType = ListPersistentDataType.LIST.listTypeFrom(UUIDDataType)
-    val newignoredMaterials: HashSet<Material> = hashSetOf()
+    val ignoredMaterials: HashSet<Material> = hashSetOf()
     /*public val ignoredMaterials: HashSet<Material> = HashSet(setOf(
         Material.BEEHIVE,
         Material.BELL,
@@ -68,7 +67,7 @@ object Utils {
     }
 
     fun isIgnored(material: Material): Boolean { // Keep separate from tile entity check as we may want to store non-tile entities later in a different way
-        return newignoredMaterials.contains(material)
+        return ignoredMaterials.contains(material)
     }
 
     fun addFriend(player: Player, friend: Player) {

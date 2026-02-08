@@ -1,5 +1,5 @@
 name: blockprot
-version: '1.2.2'
+version: '1.2.3'
 main: io.github.lamelemon.blockprot.BlockProt
 api-version: '1.21.11'
 prefix: BlockProt

@@ -34,6 +34,7 @@ class BlockProt : JavaPlugin() {
 
         pluginManager.registerEvents(BlockPlace(), this)
         pluginManager.registerEvents(BlockInteract(config.getBoolean("ignore-natural-lootables", true)), this)
+        config.getStringList("ignored-materials").forEach { it -> Material.getMaterial(it)?.let { Utils.ignoredMaterials.add(it) }  }
 
         registerCommand("friends", config.getStringList("friends.command-aliases"), Friends())
 

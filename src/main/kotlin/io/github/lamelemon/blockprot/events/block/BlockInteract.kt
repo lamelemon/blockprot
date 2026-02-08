@@ -78,8 +78,7 @@ class BlockInteract(val ignoreLootables: Boolean): Listener {
                 player.closeInventory()
                 BlockOwnerDialog(player, block, blockState)
                 event.setUseInteractedBlock(Event.Result.DENY)
-            }
-            else if (!Utils.hasOwner(dataContainer)) {
+            } else if (!Utils.hasOwner(dataContainer)) {
                 if (ignoreLootables && blockState is LootableBlockInventory && blockState.hasLootTable()) return
 
                 Utils.setOwner(blockState, player)
@@ -89,18 +88,7 @@ class BlockInteract(val ignoreLootables: Boolean): Listener {
     }
 
     @EventHandler
-    fun blockDestroy(event: BlockDestroyEvent) {
-        if (event.isCancelled) return
-
-        val blockState = event.block.state
-        if (blockState !is TileState) return
-        if (Utils.isIgnored(blockState.type)) return
-
-        if (Utils.hasOwner(blockState.persistentDataContainer)) event.isCancelled = true
-    }
-
-    @EventHandler
-    fun blockBreak(event: BlockBreakEvent) {
+    fun blockBreakEvent(event: BlockBreakEvent) {
         if (event.isCancelled) return
 
         val blockState = event.block.state
@@ -110,19 +98,6 @@ class BlockInteract(val ignoreLootables: Boolean): Listener {
         if (Utils.hasOwner(blockState.persistentDataContainer) && !Utils.isOwner(blockState.persistentDataContainer, event.player)) {
             event.isCancelled = true
             Utils.notifyPlayer(event.player, "<red>You are not allowed to break this block!</red>", Sound.BLOCK_NOTE_BLOCK_PLING)
-        }
-    }
-
-    @EventHandler
-    fun blockBurn(event: BlockBurnEvent) {
-        if (event.isCancelled) return
-
-        val blockState = event.block.state
-        if (blockState !is TileState) return
-        if (Utils.isIgnored(blockState.type)) return
-
-        if (Utils.hasOwner(blockState.persistentDataContainer)) {
-            event.isCancelled = true
         }
     }
 
@@ -138,11 +113,32 @@ class BlockInteract(val ignoreLootables: Boolean): Listener {
         filterExplosion(event.blockList())
     }
 
+    @EventHandler
+    fun blockDestroyEvent(event: BlockDestroyEvent) {
+        if (shouldNotDestruct(event.isCancelled, event.block)) event.isCancelled = true
+    }
+
+    @EventHandler
+    fun blockBurnEvent(event: BlockBurnEvent) {
+        if (shouldNotDestruct(event.isCancelled, event.block)) event.isCancelled = true
+    }
+
     private fun filterExplosion(blocks: MutableList<Block>) {
         blocks.removeIf { block ->
-            block.state is TileState &&
-                    !Utils.isIgnored(block.type) &&
-                    Utils.hasOwner((block.state as TileState).persistentDataContainer)
+                    block.state is TileState
+                    && !Utils.isIgnored(block.type)
+                    && Utils.hasOwner((block.state as TileState).persistentDataContainer)
         }
+    }
+
+    private fun shouldNotDestruct(isCancelled: Boolean, block: Block): Boolean {
+        if (isCancelled) return false
+
+        val blockState = block.state
+        if (blockState !is TileState) return false
+        if (Utils.isIgnored(blockState.type)) return false
+
+        if (Utils.hasOwner(blockState.persistentDataContainer)) return true
+        return false
     }
 }
