@@ -11,6 +11,7 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickCallback
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.block.Chest
@@ -26,9 +27,14 @@ class BlockOwnerDialog(val player: Player, val block: Block, val tileState: Tile
     init {
         player.showDialog(Dialog.create { builder ->
             val currentState = Utils.getLockState(tileState.persistentDataContainer)
+            val owner = Utils.getOwner(tileState.persistentDataContainer)
             builder.empty()
-                .base(DialogBase.builder(Component.text("${player.name}'s ${
-                    tileState.block.type.name.lowercase(getDefault()).replaceFirstChar { it.titlecase(getDefault()) }}"
+                .base(DialogBase.builder(Component.text("${
+                    if (Utils.isOwner(tileState.persistentDataContainer, player)) player.name 
+                    else owner?.let { Bukkit.getOfflinePlayer(it).name ?: "Unknown Player" }
+                }'s ${
+                    tileState.block.type.name.lowercase(getDefault()).replaceFirstChar { it.titlecase(getDefault()) }
+                }"
                 ))
                     .inputs(listOf(
                         DialogInput.singleOption("lockState", 300, listOf(

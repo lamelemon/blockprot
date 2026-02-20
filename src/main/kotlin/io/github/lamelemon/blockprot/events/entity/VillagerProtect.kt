@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.UUID
+import java.util.*
 
 // This class is meant to be constructed whenever a player runs the /protectVillager command
 class VillagerProtect(val player: Player, timeout: Long, val applyGlow: Boolean): Listener, BukkitRunnable() {
