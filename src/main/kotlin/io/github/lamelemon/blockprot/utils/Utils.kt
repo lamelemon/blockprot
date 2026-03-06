@@ -18,6 +18,7 @@ object Utils {
     private val ownerKey: NamespacedKey = NamespacedKey(instance, "owner")
     private val lockStateKey: NamespacedKey = NamespacedKey(instance, "lockstate")
 
+    // TODO Probably change this to a struct/array of structs
     enum class LockState(val state: String, val index: Byte) {
         OWNER("owner", 1),
         FRIENDS("friends", 2),
@@ -26,36 +27,6 @@ object Utils {
 
     private val uuidListDataType = ListPersistentDataType.LIST.listTypeFrom(UUIDDataType)
     val ignoredMaterials: HashSet<Material> = hashSetOf()
-    /*public val ignoredMaterials: HashSet<Material> = HashSet(setOf(
-        Material.BEEHIVE,
-        Material.BELL,
-        Material.SUSPICIOUS_GRAVEL,
-        Material.SUSPICIOUS_SAND,
-        Material.CALIBRATED_SCULK_SENSOR,
-        Material.SCULK_CATALYST,
-        Material.SCULK_SENSOR,
-        Material.SCULK_SHRIEKER,
-        Material.CHISELED_BOOKSHELF,
-        Material.COMPARATOR,
-        Material.CREAKING_HEART,
-        Material.SPAWNER,
-        Material.DAYLIGHT_DETECTOR,
-        Material.DECORATED_POT,
-        Material.ENCHANTING_TABLE,
-        Material.END_GATEWAY,
-        Material.TRIAL_SPAWNER,
-        Material.VAULT,
-        Material.COMMAND_BLOCK,
-        Material.CHAIN_COMMAND_BLOCK,
-        Material.REPEATING_COMMAND_BLOCK,
-        Material.ENDER_CHEST
-    ) + Tag.BANNERS.values
-        + Tag.BEDS.values
-        + Tag.COPPER_GOLEM_STATUES.values
-        + Tag.SIGNS.values
-        + Tag.WOODEN_SHELVES.values
-        + Tag.ITEMS_SKULLS.values
-        )*/
 
     fun messagePlayer(player: Player, message: String) {
         player.sendRichMessage("<white><gold>[</gold><blue>BlockProt</blue><gold>]</gold> $message</white>")

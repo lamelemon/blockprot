@@ -1,5 +1,6 @@
 package io.github.lamelemon.blockprot.utils
 
+import io.papermc.paper.block.TileStateInventoryHolder
 import io.papermc.paper.dialog.Dialog
 import io.papermc.paper.registry.data.dialog.ActionButton
 import io.papermc.paper.registry.data.dialog.DialogBase
@@ -11,30 +12,25 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickCallback
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit
 import org.bukkit.Sound
-import org.bukkit.block.Block
 import org.bukkit.block.Chest
 import org.bukkit.block.DoubleChest
 import org.bukkit.block.TileState
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import java.util.Locale.getDefault
 import org.bukkit.block.data.type.Chest as ChestData
 
-class BlockOwnerDialog(val player: Player, val block: Block, val tileState: TileState): Listener {
+class BlockOwnerDialog(val player: Player, var tileState: TileState): Listener {
 
     init {
         player.showDialog(Dialog.create { builder ->
+            val block = tileState.block
             val currentState = Utils.getLockState(tileState.persistentDataContainer)
-            val owner = Utils.getOwner(tileState.persistentDataContainer)
             builder.empty()
-                .base(DialogBase.builder(Component.text("${
-                    if (Utils.isOwner(tileState.persistentDataContainer, player)) player.name 
-                    else owner?.let { Bukkit.getOfflinePlayer(it).name ?: "Unknown Player" }
-                }'s ${
-                    tileState.block.type.name.lowercase(getDefault()).replaceFirstChar { it.titlecase(getDefault()) }
-                }"
+                .base(DialogBase.builder(Component.text("${player.name}'s ${
+                    tileState.block.type.name.lowercase(getDefault()).replaceFirstChar { it.titlecase(getDefault()) }}"
                 ))
                     .inputs(listOf(
                         DialogInput.singleOption("lockState", 300, listOf(
@@ -67,10 +63,12 @@ class BlockOwnerDialog(val player: Player, val block: Block, val tileState: Tile
                             .action(
                                 DialogAction.customClick(
                                     { response, audience ->
-                                        val newState = response.getText("lockState")?.toByte()
-                                        if (newState is Byte && newState != currentState) {
-                                            Utils.setLockState(tileState, newState)
-                                            Utils.notifyPlayer(player, "Changed block lock state!", Sound.BLOCK_NOTE_BLOCK_PLING)
+                                        val newLockState = response.getText("lockState")?.toByte()
+                                        if (newLockState is Byte && newLockState != currentState) {
+                                            Utils.setLockState(block.state as TileState, newLockState)
+                                            Utils.notifyPlayer(player, "Changed block lock state to ${
+                                                Utils.LockState.values().find { it.index == newLockState }?.name ?: "Invalid lock state, please report this."
+                                            }!", Sound.BLOCK_NOTE_BLOCK_PLING)
                                         }
                                     },
                                     ClickCallback.Options.builder()
@@ -83,17 +81,19 @@ class BlockOwnerDialog(val player: Player, val block: Block, val tileState: Tile
                             .action(
                                 DialogAction.customClick(
                                     { response, audience ->
+                                        tileState = block.state as TileState
                                         Utils.removeOwner(tileState)
                                         Utils.setLockState(tileState, Utils.LockState.FRIENDS)
                                         Utils.notifyPlayer(player, "Removed ownership of block! Sneak + Use to reclaim ownership!", Sound.BLOCK_NOTE_BLOCK_PLING)
+                                        // Check if block is part of a double chest
                                         if (tileState is Chest && (tileState.blockData as ChestData).type != ChestData.Type.SINGLE) {
-                                            val doubleChest = tileState.inventory.holder as DoubleChest
+                                            val doubleChest = (tileState as TileStateInventoryHolder).inventory.holder as DoubleChest
 
-                                            // Slightly confusing, this is how it works though.
+                                            // Get the other chest
                                             val otherChest = if ((tileState.blockData as ChestData).type == ChestData.Type.LEFT) doubleChest.leftSide
                                             else doubleChest.rightSide
 
-                                            if (Utils.isOwner((otherChest as TileState).persistentDataContainer, player) || player.hasPermission("blockprot.permission.admin.unlock")) {
+                                            if (Utils.isOwner((otherChest as TileState).persistentDataContainer, player)) {
                                                 Utils.removeOwner(otherChest)
                                                 Utils.setLockState(otherChest, Utils.LockState.FRIENDS)
                                             }

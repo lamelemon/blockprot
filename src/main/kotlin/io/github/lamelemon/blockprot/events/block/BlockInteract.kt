@@ -76,7 +76,7 @@ class BlockInteract(val ignoreLootables: Boolean): Listener {
         if (player.isSneaking && player.inventory.itemInMainHand.isEmpty) {
             if (Utils.isOwner(dataContainer, player) || (Utils.hasOwner(dataContainer) && player.hasPermission("blockprot.permission.admin.unlock"))) {
                 player.closeInventory()
-                BlockOwnerDialog(player, block, blockState)
+                BlockOwnerDialog(player, blockState)
                 event.setUseInteractedBlock(Event.Result.DENY)
             } else if (!Utils.hasOwner(dataContainer)) {
                 if (ignoreLootables && blockState is LootableBlockInventory && blockState.hasLootTable()) return
