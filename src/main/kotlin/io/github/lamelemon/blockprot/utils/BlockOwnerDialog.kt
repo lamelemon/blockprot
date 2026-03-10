@@ -81,13 +81,13 @@ class BlockOwnerDialog(val player: Player, var tileState: TileState): Listener {
                             .action(
                                 DialogAction.customClick(
                                     { response, audience ->
-                                        tileState = block.state as TileState
+                                        tileState = block.state as? TileState ?: return@customClick
                                         Utils.removeOwner(tileState)
                                         Utils.setLockState(tileState, Utils.LockState.FRIENDS)
                                         Utils.notifyPlayer(player, "Removed ownership of block! Sneak + Use to reclaim ownership!", Sound.BLOCK_NOTE_BLOCK_PLING)
                                         // Check if block is part of a double chest
                                         if (tileState is Chest && (tileState.blockData as ChestData).type != ChestData.Type.SINGLE) {
-                                            val doubleChest = (tileState as TileStateInventoryHolder).inventory.holder as DoubleChest
+                                            val doubleChest = (tileState as? TileStateInventoryHolder ?: return@customClick).inventory.holder as? DoubleChest ?: return@customClick
 
                                             // Get the other chest
                                             val otherChest = if ((tileState.blockData as ChestData).type == ChestData.Type.LEFT) doubleChest.leftSide
